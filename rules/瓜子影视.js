@@ -611,7 +611,7 @@ const csdown = {
         if (!getItem('token', '')) {
             let random = 864150060000000 + Math.floor(Math.random() * 10000) + '';
             setItem('deviceId', random);
-            if (!getItem('ran')) {
+            if (!getItem('ran', '')) {
                 let ran = this.generateRandomHex(40).toUpperCase();
                 setItem('ran', ran);
             }
