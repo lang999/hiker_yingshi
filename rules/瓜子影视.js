@@ -2,22 +2,14 @@ const csdown = {
     d: [],
     d_: [],
     author: '流苏',
-    version: 20251123,
+    title: '瓜子影视',
+    version: 20260107,
     home: function() {
         var d = this.d;
         var d_ = this.d_;
         var pg = MY_PAGE;
         if (MY_PAGE == 1) {
-            if (MY_RULE.version < 20250901) {
-                confirm({
-                    title: "更新提示",
-                    content: '本体更新',
-                    confirm() {
-                        return parsePaste('云6oooole/xxxxxx/m0aotbsahqugvrkx@WzglWJ')
-                    },
-                    cancel() {}
-                });
-            }
+            this.isauthor();
             try {
                 if (!getItem('up' + this.version, '')) {
                     this.update()
@@ -30,10 +22,13 @@ const csdown = {
             d_.push({   
                 title: "搜索 ",
                 url: $.toString(() => {
-                    putMyVar('keyword', input);
-                    return $('hiker://empty?page=fypage&#gameTheme#').rule(() => {
-                        $.require("csdown").search()
-                    })
+                    if (input) {
+                        putMyVar('keyword', input);
+                        return $('hiker://empty?page=fypage&#gameTheme#').rule(() => {
+                            $.require("csdown").search()
+                        })
+                    }
+                    return 'hiker://empty';
                 }),
                 desc: "请输入搜索关键词",
                 col_type: "input",
@@ -97,6 +92,34 @@ const csdown = {
     addressTag: function(url, text) {
         return "<a href='" + url + "'>" + text + "</a>";
     },
+    top_Cate: function(list, n, d, col, longclick) {
+        col = col || 'scroll_button';
+        longclick = longclick || [];
+        setItem(n + '_index', list[0].id + '');
+        let n_ = getMyVar(n, getItem(n + '_index'));
+        list.forEach(data => {
+            d.push({
+                title: (n_ == data.id ? this.strong(data.name, 'FF6699') : data.name),
+                img: data.img || '',
+                url: $('#noLoading#').lazyRule((n, name, nowid, newid) => {
+                    if (newid != nowid) {
+                        putMyVar(n, newid);
+                        refreshPage(false);
+                    }
+                    return 'hiker://empty';
+                }, n, data.name, n_, data.id + ''),
+                col_type: col,
+                extra: {
+                    longClick: longclick,
+                    backgroundColor: n_ == data.id ? "#20FA7298" : "",
+                }
+            })
+        })
+        d.push({
+            col_type: 'blank_block',
+        });
+        return d
+    },
     Cate: function(list, n, d, col, longclick) {
         col = col || 'scroll_button';
         longclick = longclick || [];
@@ -104,22 +127,19 @@ const csdown = {
         list.forEach(data => {
             let title = data.title.split('&');
             let id = data.id.split('&');
-            let img;
-            if (data.img != null) {
-                img = data.img.split('&');
-            } else {
-                img = [];
-            }
+            let img = data.img != null ? data.img.split('&') : [];
             let n_ = getMyVar(n, index_n);
             title.forEach((title, index) => {
                 d.push({
                     title: (n_ == id[index] ? (col == 'icon_small_3' ? this.color(title) : this.strong(title, 'FF6699')) : title),
                     img: img[index],
-                    url: $('#noLoading#').lazyRule((n, title, id) => {
-                        putMyVar(n, id);
-                        refreshPage(false);
+                    url: $('#noLoading#').lazyRule((n, title, nowid, newid) => {
+                        if (newid != nowid) {
+                            putMyVar(n, newid);
+                            refreshPage(false);
+                        }
                         return 'hiker://empty';
-                    }, n, title, id[index] + ''),
+                    }, n, title, n_, id[index] + ''),
                     col_type: col,
                     extra: {
                         longClick: longclick,
@@ -201,7 +221,10 @@ const csdown = {
     post: function(url, request_key) {
         let t = Math.floor(Date.now() / 1000) + '';
         let token = getItem('token', '') || '';
-        let keys = this.rsa_en('{"iv":"rCMNwZASNBKZ8mXV","key":"OITxa5OqAYjhswxx"}');
+        let keys = this.rsa_en(JSON.stringify({
+            "iv": "rCMNwZASNBKZ8mXV",
+            "key": "OITxa5OqAYjhswxx"
+        }));
         request_key = this.Encrypt(request_key || '{}', 'OITxa5OqAYjhswxx', 'rCMNwZASNBKZ8mXV');
         let signature = md5('token_id=,token=' + token + ',phone_type=1,request_key=' + request_key + ',app_id=1,time=' + t + ',keys=' + keys + '*&zvdvdvddbfikkkumtmdwqppp?|4Y!s!2br');
         let body = 'token=' + token + '&token_id=&phone_type=1&time=' + t + '&phone_model=xiaomi-25031&keys=' + keys + '&request_key=' + request_key + '&signature=' + signature.toUpperCase() + '&app_id=1&ad_version=1';
@@ -213,8 +236,8 @@ const csdown = {
                 'Cache-Control': 'no-cache',
                 'Version': '2506030',
                 'PackageName': 'com.w634aa81a0.u87401fb17.u66645d4a420250930',
-                'Ver': '3.0.3.2',
-                'api-ver': '3.0.3.2',
+                'Ver': '3.0.3.6',
+                'api-ver': '3.0.3.6',
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: body,
@@ -397,6 +420,12 @@ const csdown = {
                 "““声明””：本小程序作者为““" + this.author + "””",
             ]
         }, {
+            title: "2026/01/07",
+            records: [
+                "‘‘优化’’：优化token获取逻辑，需重生后实现",
+                "‘‘优化’’：优化部分代码",
+            ]
+        }, {
             title: "2025/11/23",
             records: [
                 "““修复””：修复视频分类(需要重生)",
@@ -559,7 +588,7 @@ const csdown = {
             /*
                         let api_url_list = JSON.parse(fetch('https://api.moe3dze.com/gz/initialize/getApiUrlList?parameter=key', {
                             headers: {
-                                'client-version': '3.0.3.2',
+                                'client-version': '3.0.3.6',
                                 'Content-Type': 'application/x-www-form-urlencoded',
                             },
                             body: 'parameter=',
@@ -582,11 +611,31 @@ const csdown = {
         if (!getItem('token', '')) {
             let random = 864150060000000 + Math.floor(Math.random() * 10000) + '';
             setItem('deviceId', random);
-            let request_key = '{"new_key":"D0AF7BE2C461432C8EBDC3A767A1711BD5F6E7E4","old_key":"aLFBMWpxBrIDAD1Si/KVvm41"}';
-            let token = this.post('/App/Authentication/Device/signIn', request_key);
+            if (!getItem('ran')) {
+                let ran = this.generateRandomHex(40).toUpperCase();
+                setItem('ran', ran);
+            }
+            let request_key, token;
+            if (!getItem('signup', '')) {
+                request_key = JSON.stringify({
+                    "new_key": getItem('ran'),
+                    "old_key": "aLFBMWpxBrIDAD1Si/KVvm41",
+                    "phone_type": 1,
+                    "code": ''
+                });
+                token = this.post('/App/Authentication/Device/signUp', request_key);
+                setItem('signup', '1')
+            } else {
+                request_key = JSON.stringify({
+                    "new_key": getItem('ran'),
+                    "old_key": "aLFBMWpxBrIDAD1Si/KVvm41",
+                });
+                token = this.post('/App/Authentication/Device/signIn', request_key);
+            }
             log(token)
             setItem('token', token.token);
             setItem('token_id', token.app_user_id);
+            putMyVar('token_refresh', '1')
         }
         if (!getMyVar('token_refresh', '')) {
             let token_refresh = this.post('/App/Authentication/Authenticator/refresh');
@@ -595,6 +644,14 @@ const csdown = {
             setItem('token_id', token_refresh.app_user_id);
             putMyVar('token_refresh', '1')
         }
+    },
+    generateRandomHex: function(length) {
+        var result = '';
+        var characters = '0123456789abcdef';
+        for (var i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return result;
     },
     latestvideo: function() {
         var d = this.d;
@@ -616,7 +673,10 @@ const csdown = {
             });
             setPreResult(d_)
         }
-        let latestvideo_body = '{"pageSize":"30","page":"' + pg + '"}';
+        let latestvideo_body = JSON.stringify({
+            "pageSize": "30",
+            "page": pg
+        });
         let latestvideo_list = this.post('/App/Index/latestVideo', latestvideo_body);
         latestvideo_list.forEach(data => {
             d.push({
@@ -659,7 +719,11 @@ const csdown = {
             setPreResult(d_)
         }
         try {
-            let body = '{"cateId":"' + id + '","pageSize":"20","page":"' + pg + '"}';
+            let body = JSON.stringify({
+                "cateId": id,
+                "pageSize": "20",
+                "page": pg
+            });
             let recommend = this.post('/App/NewDiscover/getList', body);
             if (MY_PAGE == 1) {
                 d.push({
@@ -730,7 +794,11 @@ const csdown = {
             })
         }
         try {
-            let body = '{"cateId":"' + id + '","pageSize":"30","page":"' + pg + '"}';
+            let body = JSON.stringify({
+                "cateId": id,
+                "pageSize": "30",
+                "page": pg
+            });
             let subcatelist = this.post('/App/NewDiscover/getSubCateList', body).list;
             subcatelist.forEach(data => {
                 d.push({
@@ -782,7 +850,11 @@ const csdown = {
             })
         }
         try {
-            let body = '{"cateId":"' + id + '","pageSize":"30","page":"' + pg + '"}';
+            let body = JSON.stringify({
+                "cateId": id,
+                "pageSize": "30",
+                "page": pg
+            });
             let subvodlist = this.post('/App/NewDiscover/getSubVodList', body).list;
             subvodlist.forEach(data => {
                 d.push({
@@ -816,12 +888,20 @@ const csdown = {
         try {
             if (!storage0.getMyVar('playinfo', '')) {
                 let t = Math.floor(Date.now() / 1000) + '';
-                let request_key = '{"token_id":"' + getItem('token_id') + '","vod_id":"' + id + '","mobile_time":"' + t + '","token":"' + getItem('token') + '"}'
+                let request_key = JSON.stringify({
+                    "token_id": getItem('token_id'),
+                    "vod_id": id,
+                    "mobile_time": t,
+                    "token": getItem('token')
+                })
                 let playinfo = this.post('/App/IndexPlay/playInfo', request_key);
                 storage0.putMyVar('playinfo', playinfo);
             }
             if (!storage0.getMyVar('Vurl')) {
-                let request_key = '{"vurl_cloud_id":"2","vod_d_id":"' + id + '"}';
+                let request_key = JSON.stringify({
+                    "vurl_cloud_id": "2",
+                    "vod_d_id": id
+                });
                 let Vurl = this.post('/App/Resource/Vurl/show', request_key).list;
                 storage0.putMyVar('Vurl', Vurl);
             }
@@ -892,6 +972,25 @@ const csdown = {
                             }
                             return 'select://' + JSON.stringify(Line);
                         })
+                    }, {
+                        title: '当前样式：' + getItem('pic_col_type', 'text_2'),
+                        js: $.toString(() => {
+                            //let options = ['text_1', 'text_2', 'text_3', 'text_4', 'text_center_1', 'avatar', 'text_icon', 'icon_1_left_pic'];
+                            //log(getColTypes())
+                            let options = getColTypes();
+                            let Line = {
+                                title: '切换样式',
+                                options: options,
+                                selectedIndex: options.indexOf(getItem('pic_col_type', 'text_2')),
+                                col: 2,
+                                js: $.toString((options) => {
+                                    setItem('pic_col_type', input);
+                                    refreshPage(false);
+                                    toast('样式切换为：' + input);
+                                }, options)
+                            }
+                            return 'select://' + JSON.stringify(Line);
+                        })
                     }],
                     lineVisible: false,
                 }
@@ -918,7 +1017,7 @@ const csdown = {
                         url: $().lazyRule((id, vurl_id) => {
                             return $.require("csdown").jiexi(id, vurl_id)
                         }, id, data.id),
-                        col_type: col,
+                        col_type: getItem('pic_col_type', col),
                         extra: {
                             cls: '选集_',
                         }
@@ -1084,7 +1183,7 @@ const csdown = {
                     }
                 })
                 let body = JSON.stringify({
-                    'keywords': getMyVar('keyword'),
+                    'keywords': getMyVar('keyword', ''),
                     'order_val': findOrder,
                 })
                 let list = this.post('/App/Index/findMoreVod', body).list;
@@ -1262,7 +1361,9 @@ const csdown = {
                 }
                 setPreResult(d_);
                 if (!storage0.getMyVar('banner_' + cate_pid)) {
-                    let body = '{"pid":"' + cate_pid + '"}';
+                    let body = JSON.stringify({
+                        "pid": cate_pid
+                    });
                     let banner = this.post('/App/Ad/bannerInfo', body).list;
                     let banner_ = [];
                     banner.forEach(data => {
@@ -1294,12 +1395,16 @@ const csdown = {
                     }
                 })
                 if (!storage0.getMyVar('cate_t_id_' + cate_t_id)) {
-                    let body = '{"t_id":"' + cate_t_id + '"}'
+                    let body = JSON.stringify({
+                        "t_id": cate_t_id
+                    });
                     let cate_t_id_list = this.post('/App/IndexList/indexScreen', body);
                     storage0.putMyVar('cate_t_id_' + cate_t_id, cate_t_id_list)
                 }
                 if (!storage0.getMyVar('indexlist_' + cate_pid)) {
-                    let indexlist_body = '{"pid":"' + cate_pid + '"}';
+                    let indexlist_body = JSON.stringify({
+                        "pid": cate_pid
+                    });
                     let indexlist = this.post('/App/IndexList/index', indexlist_body).list;
                     storage0.putMyVar('indexlist_' + cate_pid, indexlist);
                 }
@@ -1319,7 +1424,7 @@ const csdown = {
                     item.list.forEach(data => {
                         d.push({
                             title: data.c_name,
-                            desc: data.new_continue + '  ' + data.vod_douban_score,
+                            desc: data.new_continue + '  ' + (data.vod_douban_score ? data.vod_douban_score : ''),
                             img: data.c_pic,
                             url: $('hiker://empty?#immersiveTheme#').rule(() => {
                                 $.require("csdown").videoerji();
@@ -1462,7 +1567,9 @@ const csdown = {
             }
         });
         setPreResult(d_)
-        let cate_erji_body = '{"pid":"' + id + '"}';
+        let cate_erji_body = JSON.stringify({
+            "pid": id
+        });
         let cate_erji_list = this.post('/App/IndexList/choiceList', cate_erji_body).list;
         cate_erji_list.forEach(data => {
             d.push({
@@ -1501,7 +1608,10 @@ const csdown = {
             }
         });
         setPreResult(d_)
-        let cate_erji_body = '{"show_id":"' + show_id + '","pid":"' + pid + '"}';
+        let cate_erji_body = JSON.stringify({
+            "show_id": show_id,
+            "pid": pid
+        });
         let cate_erji_list = this.post('/App/IndexList/hotsList', cate_erji_body).list;
         cate_erji_list.forEach(data => {
             d.push({
@@ -1614,7 +1724,13 @@ const csdown = {
                 names = ['1080', '720', '480'];
             };
             urls = names.map(data => {
-                let request_key = '{"domain_type":"8","vod_id":"' + id + '","type":"play","resolution":"' + data + '","vurl_id":"' + vurl_id + '"}';
+                let request_key = JSON.stringify({
+                    "domain_type": "8",
+                    "vod_id": id,
+                    "type": "play",
+                    "resolution": data,
+                    "vurl_id": vurl_id
+                });
                 let line_url = this.post('/App/Resource/VurlDetail/showOne', request_key).url;
                 return line_url;
             })
@@ -1873,6 +1989,26 @@ const csdown = {
                 extra: {
                     id: '排序',
                     lineVisible: false,
+                    longClick: [{
+                        title: '当前样式：' + getItem('pic_col_type', 'text_2'),
+                        js: $.toString(() => {
+                            //let options = ['text_1', 'text_2', 'text_3', 'text_4', 'text_center_1', 'avatar', 'text_icon', 'icon_1_left_pic'];
+                            //log(getColTypes())
+                            let options = getColTypes();
+                            let Line = {
+                                title: '切换样式',
+                                options: options,
+                                selectedIndex: options.indexOf(getItem('pic_col_type', 'text_2')),
+                                col: 2,
+                                js: $.toString((options) => {
+                                    setItem('pic_col_type', input);
+                                    refreshPage(false);
+                                    toast('样式切换为：' + input);
+                                }, options)
+                            }
+                            return 'select://' + JSON.stringify(Line);
+                        })
+                    }],
                 }
             })
             let 分页链接 = [];
@@ -1943,7 +2079,7 @@ const csdown = {
                         url: $('hiker://empty?chapter_id=' + data.chapter_id + '&#autoPage#&#readTheme#').rule(() => {
                             $.require("csdown").novel_jx();
                         }),
-                        col_type: col,
+                        col_type: getItem('pic_col_type', col),
                         extra: {
                             cls: '选集_',
                             book_id: id,
@@ -2183,6 +2319,26 @@ const csdown = {
                 extra: {
                     id: '排序',
                     lineVisible: false,
+                    longClick: [{
+                        title: '当前样式：' + getItem('pic_col_type', 'text_2'),
+                        js: $.toString(() => {
+                            //let options = ['text_1', 'text_2', 'text_3', 'text_4', 'text_center_1', 'avatar', 'text_icon', 'icon_1_left_pic'];
+                            //log(getColTypes())
+                            let options = getColTypes();
+                            let Line = {
+                                title: '切换样式',
+                                options: options,
+                                selectedIndex: options.indexOf(getItem('pic_col_type', 'text_2')),
+                                col: 2,
+                                js: $.toString((options) => {
+                                    setItem('pic_col_type', input);
+                                    refreshPage(false);
+                                    toast('样式切换为：' + input);
+                                }, options)
+                            }
+                            return 'select://' + JSON.stringify(Line);
+                        })
+                    }],
                 }
             })
             let 分页链接 = [];
@@ -2253,7 +2409,7 @@ const csdown = {
                         url: $().lazyRule((comic_id, chapter_id) => {
                             return $.require("csdown").comic_jx(comic_id, chapter_id);
                         }, id, data.chapter_id),
-                        col_type: col,
+                        col_type: getItem('pic_col_type', col),
                         extra: {
                             cls: '选集_',
                             comic_id: id,
@@ -2362,5 +2518,22 @@ const csdown = {
         let img = image_list.map(data => data.img);
         return 'pics://' + img.join('&&');
     },
+    isauthor() {
+        if ((MY_RULE.author == this.author && MY_RULE.title == this.title) || MY_NAME == '嗅觉浏览器') {} else {
+            confirm({
+                title: "提示",
+                content: '请勿修改作者名称和规则名称，请支持原版！',
+                confirm() {
+                    MY_RULE.title = "瓜子影视";
+                    MY_RULE.author = '流苏';
+                    toast("已改回原名，请重新导入");
+                    return "rule://" + base64Encode("海阔视界￥home_rule￥" + JSON.stringify(MY_RULE));
+                },
+                cancel() {
+                    return 'toast://请尊重作者劳动成果！';
+                },
+            });
+        }
+    }
 }
 $.exports = csdown
