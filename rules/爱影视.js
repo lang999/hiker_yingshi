@@ -1,7 +1,7 @@
 const csdown = {
     d: [],
     author: '流苏',
-    version: '20251111',
+    version: '20260109',
     rely: function(data) {
         return data.match(/\{([\s\S]*)\}/)[0].replace(/\{([\s\S]*)\}/, '$1')
     },
@@ -50,8 +50,6 @@ const csdown = {
             }]
             Cate(首页, '首页', d, 'icon_4', longclick);
             d.push({
-                col_type: 'line',
-            }, {
                 col_type: 'big_blank_block',
             }, {
                 col_type: 'big_blank_block',
@@ -90,7 +88,7 @@ const csdown = {
             return '‘‘’’<strong><font color=#' + (c || '000000') + '>' + d + '</font></strong>';
         }
         if (!getMyVar('host', '')) {
-            let appurl = fetch('https://aysappto.oss-cn-chengdu.aliyuncs.com/qj3.txt');
+            let appurl = fetch('https://aysappto.oss-cn-chengdu.aliyuncs.com/qj6.txt');
             putMyVar('host', appurl + '/')
         }
 
@@ -132,7 +130,7 @@ const csdown = {
             })
             return d;
         }
-        const de_key = 'sda1231sasddad21';
+        const de_key = '13sADsdfd24sdffs';
         // 解密函数
         function Decrypt(word) {
             const key = CryptoJS.enc.Utf8.parse(de_key);
@@ -392,6 +390,11 @@ const csdown = {
                 "““声明””:随时可能跑路",
                 "““声明””:不要相信里面的广告，不要去加里面的群",
                 "““声明””：本小程序作者为““" + this.author + "””",
+            ]
+        }, {
+            title: "2026/01/09",
+            records: [
+                "““更新””:更新至APP版本号2.2.6",
             ]
         }, {
             title: "2025/11/11",
