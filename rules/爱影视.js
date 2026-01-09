@@ -1,7 +1,7 @@
 const csdown = {
     d: [],
     author: '流苏',
-    version: '20260109_',
+    version: '20260109_1',
     rely: function(data) {
         return data.match(/\{([\s\S]*)\}/)[0].replace(/\{([\s\S]*)\}/, '$1')
     },
@@ -870,12 +870,13 @@ const csdown = {
                                                 }
                                             })
                                         })
-                                        storage0.putMyVar('search_' + getMyVar('search', '0') + getMyVar('keyword') + MY_PAGE, d);
+                                        storage0.putMyVar('search_' + getMyVar('search', '0') + getMyVar('keyword') + pg, d);
                                         deleteItem('loading_');
                                         deleteItemByCls('search_list');
                                         addItemAfter('search_blank', d);
                                     }
                                 } catch (e) {
+                                    log(e.message)
                                     toast('验证码错误');
                                     refreshPage(false)
                                 }
