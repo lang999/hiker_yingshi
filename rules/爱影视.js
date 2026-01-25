@@ -1,7 +1,7 @@
 const csdown = {
     d: [],
     author: '流苏',
-    version: '20260109_1',
+    version: '20260125',
     rely: function(data) {
         return data.match(/\{([\s\S]*)\}/)[0].replace(/\{([\s\S]*)\}/, '$1')
     },
@@ -88,7 +88,7 @@ const csdown = {
             return '‘‘’’<strong><font color=#' + (c || '000000') + '>' + d + '</font></strong>';
         }
         if (!getMyVar('host', '')) {
-            let appurl = fetch('https://aysappto.oss-cn-chengdu.aliyuncs.com/qj6.txt');
+            let appurl = fetch('https://aysappto.oss-cn-chengdu.aliyuncs.com/qj8.txt');
             putMyVar('host', appurl + '/')
         }
 
@@ -130,7 +130,7 @@ const csdown = {
             })
             return d;
         }
-        const de_key = '13sADsdfd24sdffs';
+        const de_key = '36sf31sdfsfsfsf1';
         // 解密函数
         function Decrypt(word) {
             const key = CryptoJS.enc.Utf8.parse(de_key);
@@ -390,6 +390,11 @@ const csdown = {
                 "““声明””:随时可能跑路",
                 "““声明””:不要相信里面的广告，不要去加里面的群",
                 "““声明””：本小程序作者为““" + this.author + "””",
+            ]
+        }, {
+            title: "2026/01/25",
+            records: [
+                "““更新””:更新至APP版本号2.2.9",
             ]
         }, {
             title: "2026/01/09",
@@ -1181,7 +1186,7 @@ const csdown = {
     },
     jiexi: function(url, parse_api_url, token, from) {
         eval(this.rely(this.aes));
-        if (/\.m3u8|\.mp4|\.mkv/.test(url) || from == 'GBDmp4' || from == 'GNKM' && from != 'ATQP1') {
+        if (/\.m3u8|\.mp4|\.mkv|\/live/.test(url) || from == 'GBDmp4' || from == 'GNKM' && from != 'ATQP1') {
             return url + '#isVideo=true#';
         }
         if (/\.m4a|\.mp3/.test(url)) {
