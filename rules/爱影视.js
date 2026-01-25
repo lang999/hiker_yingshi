@@ -1,7 +1,7 @@
 const csdown = {
     d: [],
     author: '流苏',
-    version: '20260125',
+    version: '20260125_1',
     rely: function(data) {
         return data.match(/\{([\s\S]*)\}/)[0].replace(/\{([\s\S]*)\}/, '$1')
     },
@@ -395,6 +395,7 @@ const csdown = {
             title: "2026/01/25",
             records: [
                 "““更新””:更新至APP版本号2.2.9",
+                "““修复””:修复搜索"
             ]
         }, {
             title: "2026/01/09",
@@ -723,7 +724,7 @@ const csdown = {
                 try {
                     let d_ = [];
                     let body = 'code=' + getMyVar('yzm') + '&keywords=' + getMyVar('keyword') + '&type_id=' + getMyVar('search', '0') + '&page=' + pg + '&key=' + getMyVar('search_uuid');
-                    let item = post('api.php/qijiappapi.index/searchList6', body);
+                    let item = post('api.php/qijiappapi.index/searchList', body);
                     item.search_list.forEach(data => {
                         d_.push({
                             title: data.vod_name + '\n' + ('‘‘’’演员：' + data.vod_actor + '\n国家：' + data.vod_area).small(),
