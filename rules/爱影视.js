@@ -1,7 +1,7 @@
 const csdown = {
     d: [],
     author: '流苏',
-    version: '20260125_1',
+    version: '20260208',
     rely: function(data) {
         return data.match(/\{([\s\S]*)\}/)[0].replace(/\{([\s\S]*)\}/, '$1')
     },
@@ -88,7 +88,7 @@ const csdown = {
             return '‘‘’’<strong><font color=#' + (c || '000000') + '>' + d + '</font></strong>';
         }
         if (!getMyVar('host', '')) {
-            let appurl = fetch('https://aysappto.oss-cn-chengdu.aliyuncs.com/qj8.txt');
+            let appurl = fetch('https://aysappto.oss-cn-chengdu.aliyuncs.com/qj9.txt');
             putMyVar('host', appurl + '/')
         }
 
@@ -130,7 +130,7 @@ const csdown = {
             })
             return d;
         }
-        const de_key = '36sf31sdfsfsfsf1';
+        const de_key = 'sfdf6756768sfdfs';
         // 解密函数
         function Decrypt(word) {
             const key = CryptoJS.enc.Utf8.parse(de_key);
@@ -258,7 +258,7 @@ const csdown = {
                 show: "black",
                 hide: "grey"
             }
-            var lazy = $(`#noLoading#`).lazyRule((dc, sdc, m, cs) => {
+            var lazy = $(`#noLoading#`).b64().lazyRule((dc, sdc, m, cs) => {
                 var show = storage0.getItem(m, '0');
                 var title = findItem('desc').title;
                 var re = /(<\/small><br>.*?>).+/g;
@@ -390,6 +390,11 @@ const csdown = {
                 "““声明””:随时可能跑路",
                 "““声明””:不要相信里面的广告，不要去加里面的群",
                 "““声明””：本小程序作者为““" + this.author + "””",
+            ]
+        },{
+            title: "2026/02/08",
+            records: [
+                "““更新””:更新至APP版本号3.0.0，搜索未修复，不可用",
             ]
         }, {
             title: "2026/01/25",
@@ -858,7 +863,7 @@ const csdown = {
                                 });
                                 try {
                                     let body = 'code=' + getMyVar('yzm') + '&keywords=' + getMyVar('keyword') + '&type_id=' + getMyVar('search', '0') + '&page=' + pg + '&key=' + uuid;
-                                    let item = post('api.php/qijiappapi.index/searchList6', body);
+                                    let item = post('api.php/qijiappapi.index/searchList', body);
                                     if (item.search_list && item.search_list.length > 0) {
                                         item.search_list.forEach(data => {
                                             d.push({
