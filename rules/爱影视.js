@@ -1,7 +1,7 @@
 const csdown = {
     d: [],
     author: '流苏',
-    version: '20260208',
+    version: '20260221',
     rely: function(data) {
         return data.match(/\{([\s\S]*)\}/)[0].replace(/\{([\s\S]*)\}/, '$1')
     },
@@ -88,7 +88,7 @@ const csdown = {
             return '‘‘’’<strong><font color=#' + (c || '000000') + '>' + d + '</font></strong>';
         }
         if (!getMyVar('host', '')) {
-            let appurl = fetch('https://aysappto.oss-cn-chengdu.aliyuncs.com/qj9.txt');
+            let appurl = fetch('https://aysappto.oss-cn-chengdu.aliyuncs.com/q16.txt');
             putMyVar('host', appurl + '/')
         }
 
@@ -130,7 +130,7 @@ const csdown = {
             })
             return d;
         }
-        const de_key = 'sfdf6756768sfdfs';
+        const de_key = 'dj382hsyqp98kqn8';
         // 解密函数
         function Decrypt(word) {
             const key = CryptoJS.enc.Utf8.parse(de_key);
@@ -382,7 +382,7 @@ const csdown = {
         }
     }),
     update: function() {
-        const hikerPop = $.require("https://raw.githubusercontent.com/csdown/hiker_yingshi/refs/heads/main/rules/hikerPop.js");
+        const hikerPop = $.require("http://123.56.105.145/weisyr/js/hikerPop.js");
         let pop = hikerPop.updateRecordsBottom([{
             title: "声明",
             records: [
@@ -391,7 +391,12 @@ const csdown = {
                 "““声明””:不要相信里面的广告，不要去加里面的群",
                 "““声明””：本小程序作者为““" + this.author + "””",
             ]
-        },{
+        }, {
+            title: "2026/02/08",
+            records: [
+                "““更新””:更新至APP版本号3.0.8，搜索未修复，不可用",
+            ]
+        }, {
             title: "2026/02/08",
             records: [
                 "““更新””:更新至APP版本号3.0.0，搜索未修复，不可用",
