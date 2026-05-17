@@ -3,11 +3,11 @@ const csdown = {
     d_: [],
     author: '流苏',
     title: '瓜子影视',
-    version: 20260107,
+    version: 20260517,
     home: function() {
-        var d = this.d;
-        var d_ = this.d_;
-        var pg = MY_PAGE;
+        let d = this.d,
+            d_ = this.d_,
+            pg = MY_PAGE;
         if (MY_PAGE == 1) {
             this.isauthor();
             try {
@@ -22,7 +22,7 @@ const csdown = {
             d_.push({   
                 title: "搜索 ",
                 url: $.toString(() => {
-                    if (input) {
+                    if (input.trim()) {
                         putMyVar('keyword', input);
                         return $('hiker://empty?page=fypage&#gameTheme#').rule(() => {
                             $.require("csdown").search()
@@ -48,6 +48,21 @@ const csdown = {
                 title: '更新日志',
                 js: $.toString(() => {
                     $.require("csdown").update()
+                })
+            }, {
+                title: '重新获取远程',
+                js: $.toString(() => {
+                    return $('是否重新获取远程文件？').confirm(() => {
+                        try {
+                            let file = fetch('https://ghproxy.net/https://raw.githubusercontent.com/csdown/hiker_yingshi/refs/heads/main/rules/%E7%93%9C%E5%AD%90%E5%BD%B1%E8%A7%86.js');
+                            writeFile('hiker://files/rules/csdown/瓜子影视.js', file);
+                            refreshPage(false);
+                            return 'toast://获取远程文件成功';
+                        } catch (e) {
+                            log(e.message)
+                            return 'toast://获取失败';
+                        }
+                    })
                 })
             }]
             this.Cate(首页, '首页', d_, 'icon_5', longclick);
@@ -188,12 +203,12 @@ const csdown = {
         eval(getCryptoJS())
         const key = CryptoJS.enc.Utf8.parse(key_);
         const iv = CryptoJS.enc.Utf8.parse(iv_);
-        var encrypted = CryptoJS.AES.encrypt(plaintext, key, {
+        let encrypted = CryptoJS.AES.encrypt(plaintext, key, {
             iv: iv,
             mode: CryptoJS.mode.CBC,
             padding: CryptoJS.pad.Pkcs7
         });
-        var ciphertext = encrypted.ciphertext.toString(CryptoJS.enc.Hex).toUpperCase();
+        let ciphertext = encrypted.ciphertext.toString(CryptoJS.enc.Hex).toUpperCase();
         return ciphertext;
     },
     rsa_en: function(data) {
@@ -230,14 +245,15 @@ const csdown = {
         let body = 'token=' + token + '&token_id=&phone_type=1&time=' + t + '&phone_model=xiaomi-25031&keys=' + keys + '&request_key=' + request_key + '&signature=' + signature.toUpperCase() + '&app_id=1&ad_version=1';
         let html = JSON.parse(fetch(getItem('host') + url, {
             headers: {
-                'code': 'GZ0611',
+                'User-Agent': 'Lavf/57.83.100',
+                'code': 'GZ0369',
                 'deviceId': getItem('deviceId'),
                 'lang': 'zh_cn',
                 'Cache-Control': 'no-cache',
-                'Version': '2506030',
-                'PackageName': 'com.w634aa81a0.u87401fb17.u66645d4a420250930',
-                'Ver': '3.0.3.6',
-                'api-ver': '3.0.3.6',
+                'Version': '2604028',
+                'PackageName': 'com.ae06aebdbb.y286327f5a.ofe849883320260517',
+                'Ver': '3.0.3.2',
+                'api-ver': '3.0.3.2',
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: body,
@@ -283,7 +299,7 @@ const csdown = {
             show: "black",
             hide: "grey"
         }
-        var lazy = $(`#noLoading#`).lazyRule((dc, sdc, m, cs) => {
+        var lazy = $(`#noLoading#`).b64().lazyRule((dc, sdc, m, cs) => {
             var show = storage0.getItem(m, '0');
             var title = findItem('desc').title;
             var re = /(<\/small><br>.*?>).+/g;
@@ -420,6 +436,13 @@ const csdown = {
                 "““声明””：本小程序作者为““" + this.author + "””",
             ]
         }, {
+            title: "2026/05/17",
+            records: [
+                "““修复””：修复视频二级解析，目前仅1080p清晰度可用",
+                "““新增””：长按图标重新拉取远程文件",
+                "‘‘优化’’：优化部分页面，优化代码",
+            ]
+        }, {
             title: "2026/01/07",
             records: [
                 "‘‘优化’’：优化token获取逻辑，需重生后实现",
@@ -456,9 +479,9 @@ const csdown = {
         }, ]);
     },
     findvideo: function() {
-        var d = this.d;
-        var d_ = this.d_;
-        var pg = MY_PAGE;
+        let d = this.d,
+            d_ = this.d_,
+            pg = MY_PAGE;
         try {
             if (MY_PAGE == 1) {
                 if (!storage0.getMyVar('NewDiscover')) {
@@ -586,17 +609,30 @@ const csdown = {
     host_url: function() {
         if (getMyVar('a', '') == '') {
             /*
-                        let api_url_list = JSON.parse(fetch('https://api.moe3dze.com/gz/initialize/getApiUrlList?parameter=key', {
-                            headers: {
-                                'client-version': '3.0.3.6',
-                                'Content-Type': 'application/x-www-form-urlencoded',
-                            },
-                            body: 'parameter=',
-                            method: 'POST',
-                        }));
-                        let api_list = JSON.parse(this.Decrypt(api_url_list.data, 'KANGEQIU@8868!~.', '0200010900030207'));
-                        */
-            let api_list = ['https://api.5udaneqy.com', 'https://api.36kzbh85.com', 'https://api.w32z7vtd.com', 'https://api.yajfv2ph.com', 'https://api.txxhuc.com', 'https://api.cpcsfgyp.com', 'https://api.moe3dze.com', 'https://api.36kzbh85.com']
+            let api_url_list = JSON.parse(fetch('https://api.5h5hbfhh.com/gz/initialize/getApiUrlList?parameter=key', {
+                headers: {
+                    'client-version': '3.0.3.2',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'parameter=',
+                method: 'POST',
+            }));
+            let api_list = JSON.parse(this.Decrypt(api_url_list.data, 'KANGEQIU@8868!~.', '0200010900030207'));
+            */
+            let api_list = [
+                'https://api.36kzbh85.com',
+                'https://api.5udaneqy.com',
+                'https://api.cpcsfgyp.com',
+                'https://api.5h5hbfhh.com',
+                'https://api.tkfupxqu.com',
+                'https://api.qchyzkww.com',
+                'https://api.w32z7vtd.com',
+                'https://api.yajfv2ph.com',
+                'https://api.txxhuc.com',
+                'https://api.cpcsfgyp.com',
+                'https://api.moe3dze.com',
+                'https://api.36kzbh85.com'
+            ];
             for (let item of api_list) {
                 let host = item;
                 let data = fetch(host + '/domain/check');
@@ -654,9 +690,9 @@ const csdown = {
         return result;
     },
     latestvideo: function() {
-        var d = this.d;
-        var d_ = this.d_;
-        let pg = MY_PAGE;
+        let d = this.d,
+            d_ = this.d_,
+            pg = MY_PAGE;
         if (MY_PAGE == 1) {
             d_.push({
                 title: '',
@@ -675,7 +711,7 @@ const csdown = {
         }
         let latestvideo_body = JSON.stringify({
             "pageSize": "30",
-            "page": pg
+            "page": pg + ''
         });
         let latestvideo_list = this.post('/App/Index/latestVideo', latestvideo_body);
         latestvideo_list.forEach(data => {
@@ -722,7 +758,7 @@ const csdown = {
             let body = JSON.stringify({
                 "cateId": id,
                 "pageSize": "20",
-                "page": pg
+                "page": pg + ''
             });
             let recommend = this.post('/App/NewDiscover/getList', body);
             if (MY_PAGE == 1) {
@@ -744,7 +780,7 @@ const csdown = {
                 d.push({
                     title: data.title + '\n' + ('‘‘’’评分：' + data.score).small(),
                     desc: data.sub_title + '\n' + (/\.m3u8|\.mp4/.test(data.pre_video) ? '‘‘’’' + this.addressTag($('#noLoading#').b64().lazyRule((pre_video) => {
-                        return pre_video;
+                        return pre_video + ';{User-Agent@Lavf/57.83.100}';
                     }, data.pre_video), '点击查看预览视频') : ''),
                     img: data.pic,
                     url: $('hiker://empty?#immersiveTheme#').rule(() => {
@@ -797,7 +833,7 @@ const csdown = {
             let body = JSON.stringify({
                 "cateId": id,
                 "pageSize": "30",
-                "page": pg
+                "page": pg + ''
             });
             let subcatelist = this.post('/App/NewDiscover/getSubCateList', body).list;
             subcatelist.forEach(data => {
@@ -820,9 +856,9 @@ const csdown = {
         setResult(d)
     },
     subvodlist: function() {
-        var d = this.d;
-        var d_ = this.d_;
-        let pg = MY_PAGE;
+        let d = this.d,
+            d_ = this.d_,
+            pg = MY_PAGE;
         let id = MY_PARAMS.cate_id;
         let name = MY_PARAMS.cate_name;
         if (MY_PAGE == 1) {
@@ -853,7 +889,7 @@ const csdown = {
             let body = JSON.stringify({
                 "cateId": id,
                 "pageSize": "30",
-                "page": pg
+                "page": pg + ''
             });
             let subvodlist = this.post('/App/NewDiscover/getSubVodList', body).list;
             subvodlist.forEach(data => {
@@ -910,7 +946,7 @@ const csdown = {
             setPageTitle(vod.vod_name);
             d.push({
                 title: vod.vod_name + '\n' + ('‘‘’’演员：' + vod.vod_actor + '\n国家：' + vod.vod_area).small(),
-                desc: '类型：' + vod.videoTag.join(' ') + '\n' + ('‘‘’’更新状态：' + vod.new_continue + '  ' + vod.vod_year),
+                desc: '类型：' + vod.videoTag.join(' ') + '\n' + ('‘‘’’更新状态：' + vod.new_continue + '  ' + (vod.vod_year.includes('1970') ? '' : vod.vod_year)),
                 img: vod.vod_pic,
                 url: $('hiker://empty?#gameTheme#').rule((pic, name, actor, videoTag, new_continue, area, vod_use_content, year) => {
                     var d = []
@@ -943,6 +979,9 @@ const csdown = {
                     setResult(d)
                 }, vod.vod_pic, vod.vod_name, vod.vod_actor, vod.videoTag.join(' '), vod.new_continue, vod.vod_area, vod.vod_use_content, vod.vod_year),
                 col_type: 'movie_1_vertical_pic_blur',
+                extra: {
+                    gradient: true
+                }
             })
             this.setDesc(d, vod.vod_use_content);
             d.push({
@@ -954,9 +993,9 @@ const csdown = {
                 extra: {
                     id: '排序',
                     longClick: [{
-                        title: '选择解析模式：' + ['1080p 720p', '1080p', '1080p 720p 480p'][+getItem('jiexi_mode', '0')],
+                        title: '选择解析模式：' + ['1080p', '1080p 720p', '1080p 720p 480p'][+getItem('jiexi_mode', '0')],
                         js: $.toString(() => {
-                            let options = ['1080p 720p', '1080p', '1080p 720p 480p'];
+                            let options = ['1080p', '1080p 720p', '1080p 720p 480p'];
                             let Line = {
                                 title: '切换解析模式',
                                 options: options,
@@ -1020,6 +1059,7 @@ const csdown = {
                         col_type: getItem('pic_col_type', col),
                         extra: {
                             cls: '选集_',
+                            id: 'guaziys_' + data.id,
                         }
                     })
                 })
@@ -1423,16 +1463,16 @@ const csdown = {
                     })
                     item.list.forEach(data => {
                         d.push({
-                            title: data.c_name,
+                            title: data.c_name || data.vod_name,
                             desc: data.new_continue + '  ' + (data.vod_douban_score ? data.vod_douban_score : ''),
-                            img: data.c_pic,
+                            img: data.c_pic || data.vod_pic,
                             url: $('hiker://empty?#immersiveTheme#').rule(() => {
                                 $.require("csdown").videoerji();
                             }),
                             col_type: 'movie_2',
                             extra: {
                                 vod_id: data.vod_id,
-                                vod_name: data.c_name,
+                                vod_name: data.c_name || data.vod_name,
                             }
                         })
                     })
@@ -1680,14 +1720,14 @@ const csdown = {
             let cate_microvod = storage0.getItem('cate_microvod');
             microvod = getMyVar('microvod', getMyVar('microvod_index'));
             if (!storage0.getMyVar('microvod_' + microvod + pg)) {
-                let cate_microvod_type = cate_microvod.map(data => data.id + '');
-                let microvod_type = cate_microvod_type.map((_, i) => i + 1);
+                let microvod_type = cate_microvod.find((_, i) => _.id == microvod).micro_type;
                 let microvod_body = JSON.stringify({
-                    "micro_type": microvod_type[+cate_microvod_type.indexOf(microvod + '')],
+                    "micro_type": microvod_type + '',
                     "pageSize": "20",
-                    "pid": microvod,
+                    "pid": microvod + '',
                     "page": pg + '',
                 });
+                //log(microvod_body)
                 let microvod_list = this.post('/App/Resource/Vod/microVodList', microvod_body).list;
                 storage0.putMyVar('microvod_' + microvod + pg, microvod_list)
             }
@@ -1700,7 +1740,7 @@ const csdown = {
                     }), '点此观看全集'),
                     img: data.pic_url.replace('jjawa.com', '67c6c7a.com'),
                     //img:data.pic_url,
-                    url: data.default_play_url,
+                    url: data.default_play_url + ';{User-Agent@Lavf/57.83.100}',
                     col_type: 'movie_1_vertical_pic',
                     extra: {
                         lineVisible: false,
@@ -1717,13 +1757,18 @@ const csdown = {
         try {
             let names;
             if (getItem('jiexi_mode', '0') == '0') {
-                names = ['1080', '720'];
-            } else if (getItem('jiexi_mode', '0') == '1') {
                 names = ['1080'];
+            } else if (getItem('jiexi_mode', '0') == '1') {
+                names = ['1080', '720'];
             } else if (getItem('jiexi_mode', '0') == '2') {
                 names = ['1080', '720', '480'];
             };
+            let headers = [];
             urls = names.map(data => {
+                headers.push({
+                    //'referer': 'http://WJiZxLXA2.com/',
+                    'User-Agent': 'Lavf/57.83.100',
+                })
                 let request_key = JSON.stringify({
                     "domain_type": "8",
                     "vod_id": id,
@@ -1736,7 +1781,8 @@ const csdown = {
             })
             return {
                 urls: urls,
-                names: names
+                names: names,
+                headers: headers
             }
         } catch (e) {
             log(e.message)
@@ -1978,6 +2024,9 @@ const csdown = {
                     setResult(d)
                 }, book.cover, book.name, book.author, book.display_label, book.book_status + book.last_chapter, book.last_chapter_time, book.description),
                 col_type: 'movie_1_vertical_pic_blur',
+                extra: {
+                    gradient: true
+                }
             })
             this.setDesc(d, book.description);
             d.push({
@@ -2308,6 +2357,9 @@ const csdown = {
                     setResult(d)
                 }, comic.cover, comic.name, comic.author, comic.flag, comic.finished + comic.last_chapter, comic.last_chapter_time, comic.description),
                 col_type: 'movie_1_vertical_pic_blur',
+                extra: {
+                    gradient: true
+                }
             })
             this.setDesc(d, comic.description);
             d.push({
